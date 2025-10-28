@@ -3,9 +3,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
-    bool moveMode;
+    //bool moveMode;
 
     public float mouseSensitivity;
+    public GameManager gm;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,30 +19,47 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            moveMode = !moveMode;
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    moveMode = !moveMode;
+        //}
         if (Input.GetKeyDown(KeyCode.R))
         {
-            rb.position = Vector2.zero;
+            gm.ResetGame();
         }
     }
 
     private void FixedUpdate()
     {
-        if (moveMode)
-        {
+        //if (moveMode)
+        //{
             rb.AddForce((Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
             mouseSensitivity = 100;
-        }
-        else
+        //}
+        //else
+        //{
+        //    rb.MovePosition(rb.position + (Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
+        //    mouseSensitivity = 1;
+        //}
+
+
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Enemy")
         {
-            rb.MovePosition(rb.position + (Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
-            mouseSensitivity = 1;
+            GameManager.lives -= 1;
+            gm.Respawn();
+        } 
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Collectible")
+        {
+            collision.gameObject.SetActive(false);
+            GameManager.score += 1;
         }
-
-
-
     }
 }

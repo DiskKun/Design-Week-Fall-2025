@@ -22,4 +22,6 @@ public class Monster : MonoBehaviour
         Vector2 direction = (target.position - transform.position).normalized;
         rb.MovePosition(rb.position + direction * Time.fixedDeltaTime * chaseSpeed);
     }
+
+    
 }
