@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -8,11 +9,17 @@ public class Player : MonoBehaviour
     public float mouseSensitivity;
     public GameManager gm;
 
+    public TextMeshProUGUI mpostext;
+
+    Vector2 mouseDirection;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         Cursor.visible = false;
+        mouseDirection = Vector2.zero;
+        mouseSensitivity = 100;
 
     }
 
@@ -26,21 +33,21 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             gm.ResetGame();
+            mouseDirection = Vector2.zero;
         }
+        mouseDirection = mouseDirection + (Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity;
+        mpostext.text = "X: " + mouseDirection.x + " Y: " + mouseDirection.y;
+
+
+
     }
 
     private void FixedUpdate()
     {
-        //if (moveMode)
-        //{
-            rb.AddForce((Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
-            mouseSensitivity = 100;
-        //}
-        //else
-        //{
-        //    rb.MovePosition(rb.position + (Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
-        //    mouseSensitivity = 1;
-        //}
+
+        //rb.AddForce((Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
+        rb.AddForce(mouseDirection * Time.deltaTime);
+
 
 
 
@@ -50,7 +57,7 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy")
         {
-            GameManager.lives -= 1;
+            gm.SetLife(GameManager.lives - 1);
             gm.Respawn();
         } 
     }
@@ -59,7 +66,7 @@ public class Player : MonoBehaviour
         if (collision.tag == "Collectible")
         {
             collision.gameObject.SetActive(false);
-            GameManager.score += 1;
+            gm.SetScore(GameManager.score + 1);
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,12 +9,15 @@ public class GameManager : MonoBehaviour
     public Transform playerSpawnLocation;
     public Transform monsterSpawnLocation;
 
-    public GameObject winText;
-    public GameObject loseText;
+    public TextMeshProUGUI winText;
+    public TextMeshProUGUI loseText;
+    public TextMeshProUGUI collectibleText;
 
     public GameObject collectiblesContainer;
+    public GameObject heartsContainer;
 
-    public List<GameObject> collectibles = new List<GameObject>();
+    List<GameObject> collectibles = new List<GameObject>();
+    List<GameObject> heartIcons = new List<GameObject>();
 
     public static int score = 0;
     public static int lives = 3;
@@ -24,6 +28,10 @@ public class GameManager : MonoBehaviour
         {
             collectibles.Add(child.gameObject);
         }
+        foreach (Transform child in heartsContainer.transform)
+        {
+            heartIcons.Add(child.gameObject);
+        }
         ResetGame();
     }
 
@@ -33,7 +41,7 @@ public class GameManager : MonoBehaviour
         if (score >= 8)
         {
             monsterGameObject.SetActive(false);
-            winText.SetActive(true);
+            winText.gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 ResetGame();
@@ -42,7 +50,7 @@ public class GameManager : MonoBehaviour
         if (lives <= 0)
         {
             playerGameObject.SetActive(false);
-            loseText.SetActive(true);
+            loseText.gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 ResetGame();
@@ -52,13 +60,13 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        score = 0;
+        SetScore(0);
         Respawn();
-        winText.SetActive(false);
-        loseText.SetActive(false);
+        winText.gameObject.SetActive(false);
+        loseText.gameObject.SetActive(false);
         monsterGameObject.SetActive(true);
         playerGameObject.SetActive(true);
-        lives = 3;
+        SetLife(3);
 
         foreach (GameObject c in collectibles)
         {
@@ -72,6 +80,26 @@ public class GameManager : MonoBehaviour
         playerGameObject.transform.position = playerSpawnLocation.position;
         playerGameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         monsterGameObject.transform.position = monsterSpawnLocation.position;
+    }
+
+    public void SetLife(int amount)
+    {
+        lives = amount;
+
+        foreach (GameObject g in heartIcons)
+        {
+            g.SetActive(false);
+        }
+        for (int i = 0; i < lives; i++)
+        {
+            heartIcons[i].SetActive(true);
+        }
+    }
+
+    public void SetScore(int amount)
+    {
+        score = amount;
+        collectibleText.text = score.ToString() + " / " + collectibles.Count;
     }
 
 
