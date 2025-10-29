@@ -45,8 +45,8 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
 
-        //rb.AddForce((Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
-        rb.AddForce(mouseDirection * Time.deltaTime);
+        rb.AddForce((Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity);
+        //rb.AddForce(mouseDirection * Time.deltaTime);
 
 
 
