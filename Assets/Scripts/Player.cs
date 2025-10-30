@@ -5,7 +5,11 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
     SpriteRenderer sr;
+    Animator animator;
+
+
     //bool moveMode;
+
 
     public float mouseSensitivity;
     public GameManager gm;
@@ -23,6 +27,7 @@ public class Player : MonoBehaviour
         Cursor.visible = false;
         mouseDirection = Vector2.zero;
         mouseSensitivity = 100;
+        animator = GetComponent<Animator>();
 
     }
 
@@ -40,6 +45,30 @@ public class Player : MonoBehaviour
         }
         mouseDirection = mouseDirection + (Vector2)Input.mousePositionDelta * Time.deltaTime * mouseSensitivity;
         mpostext.text = "X: " + mouseDirection.x + " Y: " + mouseDirection.y;
+
+        bool isMoving = rb.linearVelocity!= Vector2.zero;
+        string playerDirection = "";
+
+        if (isMoving)
+        {
+            animator.enabled = true;
+
+            if (Mathf.Abs(rb.linearVelocity.x) > Mathf.Abs(rb.linearVelocity.y))
+            {
+                playerDirection = rb.linearVelocity.x < 0 ? "Left" : "Right";
+            }
+            else
+            {
+                playerDirection = rb.linearVelocity.y < 0 ? "Down" : "Up";
+            }
+
+            animator.Play("Walk_" + playerDirection);
+        }
+        else
+        {
+            animator.Play("Walk_" + playerDirection, 0, 0f);
+            animator.enabled = false;
+        }
 
 
 
