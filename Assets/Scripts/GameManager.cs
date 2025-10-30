@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Cinemachine;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +18,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject collectiblesContainer;
     public GameObject heartsContainer;
+
+    public CinemachineCamera cinemachineCamera;
+
+    public AnimationCurve camZoomCurve;
+
+
 
     List<GameObject> collectibles = new List<GameObject>();
     List<GameObject> heartIcons = new List<GameObject>();
@@ -51,6 +59,7 @@ public class GameManager : MonoBehaviour
         } else if (lives <= 0)
         {
             playerGameObject.SetActive(false);
+            //monsterGameObject.SetActive(false);
             loseText.gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -94,6 +103,10 @@ public class GameManager : MonoBehaviour
         playerGameObject.transform.position = playerSpawnLocation.position;
         playerGameObject.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         monsterGameObject.transform.position = monsterSpawnLocation.position;
+        playerGameObject.SetActive(true);
+        SetCameraTarget(playerGameObject);
+        SetCameraSize(6, 0.1f);
+
     }
 
     public void SetLife(int amount)
@@ -114,6 +127,28 @@ public class GameManager : MonoBehaviour
     {
         score = amount;
         collectibleText.text = score.ToString() + " / " + collectibles.Count;
+    }
+
+    public void SetCameraSize(float size, float length = 1)
+    {
+        StartCoroutine(ZoomCamOverTime(size, length));
+    }
+
+    public void SetCameraTarget(GameObject target)
+    {
+        cinemachineCamera.Target.TrackingTarget = target.transform;
+    }
+
+    IEnumerator ZoomCamOverTime(float size, float length)
+    {
+        float t = 0;
+        float startingSize = cinemachineCamera.Lens.OrthographicSize;
+        while (cinemachineCamera.Lens.OrthographicSize != size)
+        {
+            cinemachineCamera.Lens.OrthographicSize = Mathf.Lerp(startingSize, size, t / length);
+            t += Time.deltaTime;
+            yield return null;
+        }
     }
 
 

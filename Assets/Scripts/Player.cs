@@ -4,10 +4,12 @@ using TMPro;
 public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
+    SpriteRenderer sr;
     //bool moveMode;
 
     public float mouseSensitivity;
     public GameManager gm;
+    
 
     public TextMeshProUGUI mpostext;
 
@@ -17,6 +19,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
         Cursor.visible = false;
         mouseDirection = Vector2.zero;
         mouseSensitivity = 100;
@@ -58,7 +61,9 @@ public class Player : MonoBehaviour
         if (collision.collider.tag == "Enemy")
         {
             gm.SetLife(GameManager.lives - 1);
-            gm.Respawn();
+            collision.gameObject.GetComponent<Animator>().SetTrigger("Eat");
+            gameObject.SetActive(false);
+            //gm.Respawn();
         } 
     }
     private void OnTriggerEnter2D(Collider2D collision)
