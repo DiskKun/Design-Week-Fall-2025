@@ -19,9 +19,14 @@ public class Monster : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+
         Vector2 direction = (target.position - transform.position).normalized;
+        float Angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
         rb.MovePosition(rb.position + direction * Time.fixedDeltaTime * chaseSpeed);
+        rb.SetRotation(Angle);
+
     }
 
-    
+
 }
