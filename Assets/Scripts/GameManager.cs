@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI winText;
     public TextMeshProUGUI loseText;
     public TextMeshProUGUI collectibleText;
+    public TextMeshProUGUI timerText;
 
     public GameObject collectiblesContainer;
     public GameObject heartsContainer;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
 
     public static int score = 0;
     public static int lives = 3;
+    public static float timer = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -46,8 +48,7 @@ public class GameManager : MonoBehaviour
             {
                 ResetGame();
             }
-        }
-        if (lives <= 0)
+        } else if (lives <= 0)
         {
             playerGameObject.SetActive(false);
             loseText.gameObject.SetActive(true);
@@ -55,11 +56,24 @@ public class GameManager : MonoBehaviour
             {
                 ResetGame();
             }
+        } else
+        {
+            timer += Time.deltaTime;
+            int mins = Mathf.FloorToInt(timer / 60);
+            int secs = Mathf.FloorToInt(timer % 60);
+            if (secs < 10)
+            {
+                timerText.text = mins + ":0" + secs;
+            } else
+            {
+                timerText.text = mins + ":" + secs;
+            }
         }
     }
 
     public void ResetGame()
     {
+        timer = 0;
         SetScore(0);
         Respawn();
         winText.gameObject.SetActive(false);
