@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public bool demoMode;
     public GameObject playerGameObject;
     public GameObject monsterGameObject;
     public Transform playerSpawnLocation;
@@ -48,36 +50,49 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (score >= 8)
+        if (!demoMode)
         {
-            monsterGameObject.SetActive(false);
-            winText.gameObject.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (score >= 8)
             {
-                ResetGame();
+                monsterGameObject.SetActive(false);
+                winText.gameObject.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    SceneManager.LoadScene(0);
+                }
             }
-        } else if (lives <= 0)
-        {
-            playerGameObject.SetActive(false);
-            //monsterGameObject.SetActive(false);
-            loseText.gameObject.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.Space))
+            else if (lives <= 0)
             {
-                ResetGame();
+                playerGameObject.SetActive(false);
+                //monsterGameObject.SetActive(false);
+                loseText.gameObject.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    SceneManager.LoadScene(0);
+                }
+            }
+            else
+            {
+                timer += Time.deltaTime;
+                int mins = Mathf.FloorToInt(timer / 60);
+                int secs = Mathf.FloorToInt(timer % 60);
+                if (secs < 10)
+                {
+                    timerText.text = mins + ":0" + secs;
+                }
+                else
+                {
+                    timerText.text = mins + ":" + secs;
+                }
             }
         } else
         {
-            timer += Time.deltaTime;
-            int mins = Mathf.FloorToInt(timer / 60);
-            int secs = Mathf.FloorToInt(timer % 60);
-            if (secs < 10)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                timerText.text = mins + ":0" + secs;
-            } else
-            {
-                timerText.text = mins + ":" + secs;
+                SceneManager.LoadScene(1);
             }
         }
+        
     }
 
     public void ResetGame()

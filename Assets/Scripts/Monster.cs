@@ -50,8 +50,8 @@ public class Monster : MonoBehaviour
     {
         audio_death.Play();
         audio_monster.Stop();
-        gm.SetCameraSize(3, 0.2f);
         gm.SetCameraTarget(gameObject);
+        gm.SetCameraSize(3, 0.2f);
 
     }
 
