@@ -1,11 +1,16 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using FMODUnity;
 
 public class Monster : MonoBehaviour
 {
     public Transform target;
     public float chaseSpeed;
     public GameManager gm;
+
+    public StudioEventEmitter backGroundMusic;
+
+    public float parameterDistance;
     //public AudioSource audio_death;
 
     //AudioSource audio_monster;
@@ -22,7 +27,7 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        backGroundMusic.SetParameter("MonsterDistance", Vector2.Distance(transform.position, target.position));
     }
 
     private void FixedUpdate()

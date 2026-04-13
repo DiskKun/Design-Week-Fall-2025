@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{80e3650c-fac1-4970-a94f-2cc561cba8e7}">
+		<property name="name">
+			<value>MonsterDistance</value>
+		</property>
+		<relationship name="folder">
+			<destination>{c83a8eac-d7cf-45c1-94b8-b5d9ccc1501b}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{762345b0-b06a-46cd-a17b-e48019329bc0}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{762345b0-b06a-46cd-a17b-e48019329bc0}">
+		<property name="maximum">
+			<value>20</value>
+		</property>
+		<property name="initialValue">
+			<value>20</value>
+		</property>
+	</object>
+</objects>

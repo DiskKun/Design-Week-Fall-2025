@@ -1880,6 +1880,8 @@ MonoBehaviour:
   target: {fileID: 1796363235}
   chaseSpeed: 5
   gm: {fileID: 1903380304}
+  backGroundMusic: {fileID: 1496678439}
+  parameterDistance: 0
 --- !u!320 &789524188
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -9180,7 +9182,9 @@ MonoBehaviour:
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
-  Params: []
+  Params:
+  - Name: MonsterDistance
+    Value: 20
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
