@@ -6,9 +6,9 @@ public class Monster : MonoBehaviour
     public Transform target;
     public float chaseSpeed;
     public GameManager gm;
-    public AudioSource audio_death;
+    //public AudioSource audio_death;
 
-    AudioSource audio_monster;
+    //AudioSource audio_monster;
     Rigidbody2D rb;
     Animator animator;
 
@@ -16,7 +16,6 @@ public class Monster : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        audio_monster = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
 
@@ -42,14 +41,11 @@ public class Monster : MonoBehaviour
 
     public void RespawnAfterDeath()
     {
-        audio_monster.Play();
         gm.Respawn();
     }
 
     public void DeathSFX()
     {
-        audio_death.Play();
-        audio_monster.Stop();
         gm.SetCameraTarget(gameObject);
         gm.SetCameraSize(3, 0.2f);
 
